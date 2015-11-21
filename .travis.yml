@@ -6,3 +6,5 @@ before_install: true
 install: true
 git:
   submodules: false
+script:
+  - xctool -sdk iphonesimulator -project LayoutModules.xcodeproj -scheme LayoutModules build test
