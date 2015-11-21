@@ -65,4 +65,25 @@ extension LayoutModuleType
             return self.prepareLayoutAttributes(attributes, origin: insetOrigin, width: insetWidth) + bottom
         }
     }
+    
+    // MARK: - Transforms
+    
+    /**
+    Produces a new layout module by translating the layout module.
+    
+    - parameter x: The x translation.
+    - parameter y: The y translation.
+    
+    - returns: A new layout module, derived from the module this function was called on.
+    */
+    public func translate(x x: CGFloat = 0, y: CGFloat = 0) -> LayoutModule
+    {
+        return LayoutModule { attributes, origin, width in
+            self.prepareLayoutAttributes(
+                attributes,
+                origin: CGPoint(x: origin.x + x, y: origin.y + y),
+                width: width
+            )
+        }
+    }
 }
