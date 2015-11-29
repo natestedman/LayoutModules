@@ -65,7 +65,10 @@ extension LayoutModuleType
             return LayoutResult(layoutAttributes: result.layoutAttributes, finalOffset: result.finalOffset + maxMajor)
         }
     }
-    
+}
+
+extension LayoutModuleType
+{
     // MARK: - Transforms
     
     /**
