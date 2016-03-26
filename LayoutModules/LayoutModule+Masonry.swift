@@ -28,7 +28,7 @@ extension LayoutModule
         calculateMajorDimension: CalculateDimension)
         -> LayoutModule
     {
-        return LayoutModule { count, origin, _, minorDimension in
+        return LayoutModule { count, origin, axis, minorDimension in
             // calculate the number of columns and width of each column
             let (minorCount, cellMinor) = calculateColumns(
                 minimum: minimumMinorDimension,
@@ -41,7 +41,7 @@ extension LayoutModule
 
             let attributes = (0..<count).map({ index -> LayoutAttributes in
                 // calculate the height of this masonry item
-                let cellMajor = calculateMajorDimension(index: index, otherDimension: cellMinor)
+                let cellMajor = calculateMajorDimension(index: index, axis: axis, otherDimension: cellMinor)
                 
                 // find the shortest column
                 let index = (0..<minorCount).minElement({ lhs, rhs in offsets[lhs] < offsets[rhs] }) ?? 0

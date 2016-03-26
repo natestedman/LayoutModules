@@ -29,11 +29,11 @@ extension LayoutModule
         calculateMajorDimension: CalculateDimension)
         -> LayoutModule
     {
-        return LayoutModule { count, origin, _, minorDimension in
+        return LayoutModule { count, origin, axis, minorDimension in
             var offset = origin.major
 
             let attributes = (0..<count).map({ index -> LayoutAttributes in
-                let majorDimension = calculateMajorDimension(index: index, otherDimension: minorDimension)
+                let majorDimension = calculateMajorDimension(index: index, axis: axis, otherDimension: minorDimension)
 
                 let frame = Rect(
                     origin: Point(major: offset, minor: origin.minor),

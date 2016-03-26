@@ -26,7 +26,7 @@ public struct LayoutModule
     ) -> LayoutResult
     
     /// A function type for dynamically calculating a dimension of a given item.
-    public typealias CalculateDimension = (index: Int, otherDimension: CGFloat) -> CGFloat
+    public typealias CalculateDimension = (index: Int, axis: Axis, otherDimension: CGFloat) -> CGFloat
     
     /// The layout function.
     private let layout: Layout

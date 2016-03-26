@@ -34,14 +34,14 @@ class ViewController: UIViewController
     
     let modules = [
         LayoutModule.table(majorDimension: 44, padding: 1),
-        LayoutModule.dynamicTable(padding: 1, calculateMajorDimension: { index, _ in
+        LayoutModule.dynamicTable(padding: 1, calculateMajorDimension: { index, _, _ in
             CGFloat((index + 1) * 10)
         }),
         LayoutModule.grid(minimumMinorDimension: 20, padding: Size(major: 10, minor: 10)).inset(minMajor: 10),
         LayoutModule.masonry(
             minimumMinorDimension: 80,
             padding: Size(major: 1, minor: 1),
-            calculateMajorDimension: { index, width in
+            calculateMajorDimension: { index, _, width in
                 return round(2 / (CGFloat(index % 4) + 1) * width)
             }
         ).inset(minMajor: 10, maxMajor: 10, minMinor: 10, maxMinor: 10),
