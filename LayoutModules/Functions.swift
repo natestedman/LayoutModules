@@ -16,7 +16,7 @@ internal func calculateColumns(minimum minimum: CGFloat, spacing: CGFloat, total
     
     while minimum * CGFloat(count) + spacing * CGFloat(count - 1) < total
     {
-        count++
+        count += 1
     }
     
     count = max(count - 1, 1)
