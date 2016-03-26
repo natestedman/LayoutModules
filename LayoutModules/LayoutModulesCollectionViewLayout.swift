@@ -31,6 +31,9 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
 
     /// The major (scrolling) axis for the layout. By default, this is `Vertical`.
     public var majorAxis = Axis.Vertical
+    {
+        didSet { invalidateLayout() }
+    }
     
     // MARK: - Modules
     
@@ -38,6 +41,9 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     ///
     /// This property should be assigned a value by clients before performing layout.
     public var moduleForSection: ((section: Int) -> LayoutModuleType)?
+    {
+        didSet { invalidateLayout() }
+    }
     
     // MARK: - Layout Implementation
     
