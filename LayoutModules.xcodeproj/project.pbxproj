@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		434464F31CA71B4F007C985B /* LayoutResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434464F21CA71B4F007C985B /* LayoutResult.swift */; };
+		434464F51CAB33F2007C985B /* LayoutModule+Axis.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434464F41CAB33F2007C985B /* LayoutModule+Axis.swift */; };
 		436AE7E91CAB0878008C44A8 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436AE7E81CAB0878008C44A8 /* Geometry.swift */; };
 		436AE7ED1CAB0878008C44A8 /* LayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */; };
 		43B1DA361BFE804A004984FF /* LayoutModules.h in Headers */ = {isa = PBXBuildFile; fileRef = 43B1DA351BFE804A004984FF /* LayoutModules.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -22,6 +23,7 @@
 
 /* Begin PBXFileReference section */
 		434464F21CA71B4F007C985B /* LayoutResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutResult.swift; sourceTree = "<group>"; };
+		434464F41CAB33F2007C985B /* LayoutModule+Axis.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LayoutModule+Axis.swift"; sourceTree = "<group>"; };
 		436AE7E81CAB0878008C44A8 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAttributes.swift; sourceTree = "<group>"; };
 		43B1DA321BFE804A004984FF /* LayoutModules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LayoutModules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -98,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				43B1DA401BFE8235004984FF /* LayoutModule.swift */,
+				434464F41CAB33F2007C985B /* LayoutModule+Axis.swift */,
 				43B1DA481BFE88A7004984FF /* LayoutModule+Grid.swift */,
 				43B1DA461BFE8896004984FF /* LayoutModule+Masonry.swift */,
 				43B1DA441BFE8873004984FF /* LayoutModule+Table.swift */,
@@ -201,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				436AE7ED1CAB0878008C44A8 /* LayoutAttributes.swift in Sources */,
+				434464F51CAB33F2007C985B /* LayoutModule+Axis.swift in Sources */,
 				43B270F31BFE905B00CF28DA /* LayoutModulesCollectionViewLayout.swift in Sources */,
 				43B1DA451BFE8873004984FF /* LayoutModule+Table.swift in Sources */,
 				43B1DA471BFE8896004984FF /* LayoutModule+Masonry.swift in Sources */,
