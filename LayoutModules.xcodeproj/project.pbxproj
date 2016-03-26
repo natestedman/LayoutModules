@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		434464F31CA71B4F007C985B /* LayoutResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434464F21CA71B4F007C985B /* LayoutResult.swift */; };
 		436AE7E91CAB0878008C44A8 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436AE7E81CAB0878008C44A8 /* Geometry.swift */; };
 		436AE7ED1CAB0878008C44A8 /* LayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */; };
 		43B1DA361BFE804A004984FF /* LayoutModules.h in Headers */ = {isa = PBXBuildFile; fileRef = 43B1DA351BFE804A004984FF /* LayoutModules.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -20,6 +21,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		434464F21CA71B4F007C985B /* LayoutResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutResult.swift; sourceTree = "<group>"; };
 		436AE7E81CAB0878008C44A8 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAttributes.swift; sourceTree = "<group>"; };
 		43B1DA321BFE804A004984FF /* LayoutModules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LayoutModules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */,
+				434464F21CA71B4F007C985B /* LayoutResult.swift */,
 			);
 			name = "Layout Attributes";
 			sourceTree = "<group>";
@@ -205,6 +208,7 @@
 				43B1DA3E1BFE80A6004984FF /* LayoutModuleType.swift in Sources */,
 				436AE7E91CAB0878008C44A8 /* Geometry.swift in Sources */,
 				43B1DA411BFE8235004984FF /* LayoutModule.swift in Sources */,
+				434464F31CA71B4F007C985B /* LayoutResult.swift in Sources */,
 				43B1DA4C1BFE89C6004984FF /* Functions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
