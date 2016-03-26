@@ -24,9 +24,7 @@ extension LayoutModule
                                          the parameters `index`, the current index within the section, and
                                          `otherDimension`, the minor dimension of the layout module.
     */
-    public static func dynamicTable(
-        padding padding: CGFloat = 0,
-        calculateMajorDimension: CalculateDimension)
+    public static func dynamicTable(padding padding: CGFloat = 0, calculateMajorDimension: CalculateDimension)
         -> LayoutModule
     {
         return LayoutModule { count, origin, axis, minorDimension in

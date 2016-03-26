@@ -25,11 +25,10 @@ extension LayoutModule
     - parameter padding:               The padding between each row and column.
     - parameter aspectRatio:           The aspect ratio, minor dimension over major dimension.
     */
-    public static func grid(
-        minimumMinorDimension minimumMinorDimension: CGFloat,
-        padding: Size,
-        aspectRatio: CGFloat = 1)
-        -> LayoutModule
+    public static func grid(minimumMinorDimension minimumMinorDimension: CGFloat,
+                            padding: Size,
+                            aspectRatio: CGFloat = 1)
+                            -> LayoutModule
     {
         return LayoutModule { count, origin, majorAxis, minorDimension in
             // calculate the number of columns and width of each column

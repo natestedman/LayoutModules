@@ -22,11 +22,10 @@ extension LayoutModule
     - parameter calculateMajorDimension: A function to calculate the major dimension of each cell, given the minor
                                          dimension and current index.
     */
-    public static func masonry(
-        minimumMinorDimension minimumMinorDimension: CGFloat,
-        padding: Size,
-        calculateMajorDimension: CalculateDimension)
-        -> LayoutModule
+    public static func masonry(minimumMinorDimension minimumMinorDimension: CGFloat,
+                               padding: Size,
+                               calculateMajorDimension: CalculateDimension)
+                               -> LayoutModule
     {
         return LayoutModule { count, origin, axis, minorDimension in
             // calculate the number of columns and width of each column
