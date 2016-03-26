@@ -20,11 +20,17 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     
     - parameter moduleForSection: A function to determine the layout module for each section.
     */
-    public convenience init(moduleForSection: (section: Int) -> LayoutModuleType)
+    public convenience init(majorAxis: Axis, moduleForSection: (section: Int) -> LayoutModuleType)
     {
         self.init()
+        self.majorAxis = majorAxis
         self.moduleForSection = moduleForSection
     }
+
+    // MARK: - Major Axis
+
+    /// The major (scrolling) axis for the layout. By default, this is `Vertical`.
+    public var majorAxis = Axis.Vertical
     
     // MARK: - Modules
     
@@ -42,23 +48,41 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     {
         if let collectionView = self.collectionView
         {
-            let width = collectionView.bounds.size.width
-            var origin = CGPointZero
+            let minorDimension: CGFloat
+
+            switch majorAxis
+            {
+            case .Horizontal:
+                minorDimension = collectionView.bounds.size.height
+            case .Vertical:
+                minorDimension = collectionView.bounds.size.width
+            }
+
+            var origin = Point(major: 0, minor: 0)
             
             self.layoutAttributes = (0..<collectionView.numberOfSections()).map({ section in
-                let attributes = (0..<collectionView.numberOfItemsInSection(section)).map({ item in
-                    return UICollectionViewLayoutAttributes(forCellWithIndexPath: NSIndexPath(forItem: item, inSection: section))
+                // use a default layout module if one is not provided
+                let module = moduleForSection?(section: section) ?? LayoutModule.table(majorDimension: 44)
+
+                let items = collectionView.numberOfItemsInSection(section)
+                let result = module.prepareLayoutAttributes(
+                    count: items,
+                    origin: origin,
+                    majorAxis: majorAxis,
+                    minorDimension: minorDimension
+                )
+
+                origin.major = result.finalOffset
+
+                return zip(result.layoutAttributes, 0..<items).map({ layoutAttributes, item in
+                    layoutAttributes.collectionViewLayoutAttributesForIndexPath(
+                        NSIndexPath(forItem: item, inSection: section),
+                        withMajorAxis: majorAxis
+                    )
                 })
-                
-                if let module = moduleForSection?(section: section)
-                {
-                    origin.y = module.prepareLayoutAttributes(attributes, origin: origin, width: width)
-                }
-                
-                return attributes
             })
-            
-            self.contentSize = CGSize(width: width, height: origin.y)
+
+            self.contentSize = Size(major: origin.major, minor: minorDimension).CGSizeWithMajorAxis(majorAxis)
         }
         else
         {

@@ -15,7 +15,7 @@ class ViewController: UIViewController
 {
     override func loadView()
     {
-        let layout = LayoutModulesCollectionViewLayout(moduleForSection: { [unowned self] section in
+        let layout = LayoutModulesCollectionViewLayout(majorAxis: .Vertical, moduleForSection: { [unowned self] section in
             return self.modules[section]
         })
         
@@ -33,19 +33,19 @@ class ViewController: UIViewController
     }
     
     let modules = [
-        LayoutModule.table(verticalPadding: 1, rowHeight: 44),
-        LayoutModule.dynamicTable(verticalPadding: 1, calculateHeight: { index, _ in
+        LayoutModule.table(majorDimension: 44, padding: 1),
+        LayoutModule.dynamicTable(padding: 1, calculateMajorDimension: { index, _ in
             CGFloat((index + 1) * 10)
         }),
-        LayoutModule.grid(minimumWidth: 20, padding: CGSizeMake(10, 10)).inset(top: 10),
+        LayoutModule.grid(minimumMinorDimension: 20, padding: Size(major: 10, minor: 10)).inset(minMajor: 10),
         LayoutModule.masonry(
-            minimumWidth: 80,
-            padding: CGSize(width: 1, height: 1),
-            calculateHeight: { index, width in
+            minimumMinorDimension: 80,
+            padding: Size(major: 1, minor: 1),
+            calculateMajorDimension: { index, width in
                 return round(2 / (CGFloat(index % 4) + 1) * width)
             }
-        ).inset(top: 10, left: 10, bottom: 10, right: 10),
-        LayoutModule.grid(minimumWidth: 50, padding: CGSizeMake(10, 10), aspectRatio: 4.0 / 3.0)
+        ).inset(minMajor: 10, maxMajor: 10, minMinor: 10, maxMinor: 10),
+        LayoutModule.grid(minimumMinorDimension: 50, padding: Size(major: 10, minor: 10), aspectRatio: 4.0 / 3.0)
     ]
 }
 

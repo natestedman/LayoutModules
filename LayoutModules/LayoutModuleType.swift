@@ -16,53 +16,53 @@ public protocol LayoutModuleType
     // MARK: - Layout
     
     /**
-     Updates the layout attribute objects with layout information.
+     Performs layout for a section.
      
-     - parameter attributes: The array of attributes to update.
-     - parameter origin:     The origin of the module.
-     - parameter width:      The width of the module.
+     - parameter attributes:     The array of attributes to update.
+     - parameter origin:         The origin of the module.
+     - parameter majorAxis:      The major axis for the layout.
+     - parameter minorDimension: The minor, or non-scrolling, dimension of the module.
      
-     - returns: The new Y offset, used for the next layout module.
+     - returns: A layout result for the section, including the layout attributes for each item, and the new initial
+                major direction offset for the next section.
      */
-    func prepareLayoutAttributes(attributes: [UICollectionViewLayoutAttributes], origin: CGPoint, width: CGFloat)
-        -> CGFloat
+    func prepareLayoutAttributes(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
+        -> LayoutResult
 }
 
 extension LayoutModuleType
 {
     // MARK: - Insets
-    
-    /**
-    Produces a new layout module by insetting the layout module, with an edge insets value.
-    
-    - parameter insets: The edge insets.
-    
-    - returns: A new layout module, derived from the module this function was called on.
-    */
-    public func inset(insets: UIEdgeInsets) -> LayoutModule
-    {
-        return inset(top: insets.top, left: insets.left, bottom: insets.bottom, right: insets.right)
-    }
-    
+
     /**
      Produces a new layout module by insetting the layout module.
      
      All parameters are optional. If a parameter is omitted, that edge will not be inset.
      
-     - parameter top:    The top inset.
-     - parameter left:   The left inset.
-     - parameter bottom: The bottom inset.
-     - parameter right:  The right inset.
+     - parameter minMajor: Insets from the minimum end of the major axis.
+     - parameter maxMajor: Insets from the maximum end of the major axis.
+     - parameter minMinor: Insets from the minimum end of the minor axis.
+     - parameter maxMinor: Insets from the maximum end of the minor axis.
      
      - returns: A new layout module, derived from the module this function was called on.
      */
-    public func inset(top top: CGFloat = 0, left: CGFloat = 0, bottom: CGFloat = 0, right: CGFloat = 0) -> LayoutModule
+    public func inset(minMajor minMajor: CGFloat = 0,
+                      maxMajor: CGFloat = 0,
+                      minMinor: CGFloat = 0,
+                      maxMinor: CGFloat = 0) -> LayoutModule
     {
-        return LayoutModule { attributes, origin, width in
-            let insetOrigin = CGPoint(x: origin.x + left, y: origin.y + top)
-            let insetWidth = width - left - right
+        return LayoutModule { count, origin, majorAxis, minorDimension in
+            let insetOrigin = Point(major: origin.major + minMajor, minor: origin.minor + minMinor)
+            let insetMinorDimension = minorDimension - minMinor - maxMinor
             
-            return self.prepareLayoutAttributes(attributes, origin: insetOrigin, width: insetWidth) + bottom
+            let result = self.prepareLayoutAttributes(
+                count: count,
+                origin: insetOrigin,
+                majorAxis: majorAxis,
+                minorDimension: insetMinorDimension
+            )
+
+            return LayoutResult(layoutAttributes: result.layoutAttributes, finalOffset: result.finalOffset + maxMajor)
         }
     }
     
@@ -71,18 +71,19 @@ extension LayoutModuleType
     /**
     Produces a new layout module by translating the layout module.
     
-    - parameter x: The x translation.
-    - parameter y: The y translation.
+    - parameter major: The major direction translation.
+    - parameter minor: The minor direction translation.
     
     - returns: A new layout module, derived from the module this function was called on.
     */
-    public func translate(x x: CGFloat = 0, y: CGFloat = 0) -> LayoutModule
+    public func translate(major major: CGFloat = 0, minor: CGFloat = 0) -> LayoutModule
     {
-        return LayoutModule { attributes, origin, width in
+        return LayoutModule { count, origin, majorAxis, minorDimension in
             self.prepareLayoutAttributes(
-                attributes,
-                origin: CGPoint(x: origin.x + x, y: origin.y + y),
-                width: width
+                count: count,
+                origin: Point(major: origin.major + major, minor: origin.minor + minor),
+                majorAxis: majorAxis,
+                minorDimension: minorDimension
             )
         }
     }

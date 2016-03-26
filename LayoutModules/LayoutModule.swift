@@ -19,13 +19,14 @@ public struct LayoutModule
     
     /// A layout function, which implements the functionality of `ModuleType`.
     public typealias Layout = (
-        attributes: [UICollectionViewLayoutAttributes],
-        origin: CGPoint,
-        width: CGFloat
-    ) -> CGFloat
+        count: Int,
+        origin: Point,
+        majorAxis: Axis,
+        minorDimension: CGFloat
+    ) -> LayoutResult
     
-    /// A function type for dynamically calculating the height of a given item.
-    public typealias CalculateHeight = (index: Int, width: CGFloat) -> CGFloat
+    /// A function type for dynamically calculating a dimension of a given item.
+    public typealias CalculateDimension = (index: Int, otherDimension: CGFloat) -> CGFloat
     
     /// The layout function.
     private let layout: Layout
@@ -59,16 +60,19 @@ extension LayoutModule: LayoutModuleType
     // MARK: - Layout
     
     /**
-    Updates the layout attribute objects with layout information.
-    
-    - parameter attributes: The array of attributes to update.
-    - parameter origin:     The origin of the module.
-    - parameter width:      The width of the module.
-    
-    - returns: The new Y offset, used for the next layout module.
-    */
-    public func prepareLayoutAttributes(attributes: [UICollectionViewLayoutAttributes], origin: CGPoint, width: CGFloat) -> CGFloat
+     Performs layout for a section.
+     
+     - parameter attributes:     The array of attributes to update.
+     - parameter origin:         The origin of the module.
+     - parameter majorAxis:      The major axis for the layout.
+     - parameter minorDimension: The minor, or non-scrolling, dimension of the module.
+     
+     - returns: A layout result for the section, including the layout attributes for each item, and the new initial
+                major direction offset for the next section.
+     */
+    public func prepareLayoutAttributes(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
+        -> LayoutResult
     {
-        return layout(attributes: attributes, origin: origin, width: width)
+        return layout(count: count, origin: origin, majorAxis: majorAxis, minorDimension: minorDimension)
     }
 }

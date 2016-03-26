@@ -15,43 +15,50 @@ extension LayoutModule
     // MARK: - Table Modules
     
     /**
-    Arranges cells in vertical rows, determining the height of each dynamically with a function.
+    Arranges cells in rows along the major dimension, determining the major dimension of each dynamically.
     
-    - parameter verticalPadding: The padding between each row. This padding is not applied before the first row, or
-                                 after the last row. For top or bottom padding, the `inset` function can be used.
-    - parameter calculateHeight: A function to calculate the height of each cell, which will receive the parameters
-                                 `index`, the current index within the section, and `width`, the width of the layout
-                                 module.
+    - parameter padding:                 The padding between each cell in the major dimension. This padding is not
+                                         applied before the first cell, or after the last cell. For applying padding to
+                                         those areas, the `inset` function can be used.
+    - parameter calculateMajorDimension: A function to calculate the major dimension of each cell, which will receive
+                                         the parameters `index`, the current index within the section, and
+                                         `otherDimension`, the minor dimension of the layout module.
     */
     public static func dynamicTable(
-        verticalPadding verticalPadding: CGFloat = 0,
-        calculateHeight: CalculateHeight)
+        padding padding: CGFloat = 0,
+        calculateMajorDimension: CalculateDimension)
         -> LayoutModule
     {
-        return LayoutModule { attributes, origin, width in
-            var y = origin.y
+        return LayoutModule { count, origin, _, minorDimension in
+            var offset = origin.major
+
+            let attributes = (0..<count).map({ index -> LayoutAttributes in
+                let majorDimension = calculateMajorDimension(index: index, otherDimension: minorDimension)
+
+                let frame = Rect(
+                    origin: Point(major: offset, minor: origin.minor),
+                    size: Size(major: majorDimension, minor: minorDimension)
+                )
+
+                offset += majorDimension + padding
+
+                return LayoutAttributes(frame: frame)
+            })
             
-            for index in (0..<(attributes.count))
-            {
-                let height = calculateHeight(index: index, width: width)
-                attributes[index].frame = CGRect(x: origin.x, y: y, width: width, height: height)
-                
-                y += height + verticalPadding
-            }
-            
-            return y - verticalPadding
+            return LayoutResult(layoutAttributes: attributes, finalOffset: offset - padding)
         }
     }
     
     /**
      Arranges cells in vertical rows.
      
-     - parameter verticalPadding: The padding between each row. This padding is not applied before the first row, or
-                                  after the last row. For top or bottom padding, the `inset` function can be used.
-     - parameter rowHeight:       The height of each row.
+     - parameter majorDimension: The height of each row.
+     - parameter padding:        The padding between each cell in the major dimension. This padding is not applied
+                                 before the first cell, or after the last cell. For applying padding to those areas, the
+                                 `inset` function can be used.
      */
-    public static func table(verticalPadding verticalPadding: CGFloat = 0, rowHeight: CGFloat) -> LayoutModule
+    public static func table(majorDimension majorDimension: CGFloat, padding: CGFloat = 0) -> LayoutModule
     {
-        return dynamicTable(verticalPadding: verticalPadding, calculateHeight: { _ in rowHeight })
+        return dynamicTable(padding: padding, calculateMajorDimension: { _ in majorDimension })
     }
 }

@@ -17,49 +17,54 @@ extension LayoutModule
     /**
     Creates a masonry layout.
     
-    - parameter minimumWidth:    The minimum width of each column.
-    - parameter padding:         The padding for each column.
-    - parameter calculateHeight: A function to calculate the height of each cell, given the column width and current
-                                 index.
+    - parameter minimumMinorDimension:   The minimum minor dimension of each row or column.
+    - parameter padding:                 The padding for each row or column.
+    - parameter calculateMajorDimension: A function to calculate the major dimension of each cell, given the minor
+                                         dimension and current index.
     */
     public static func masonry(
-        minimumWidth minimumWidth: CGFloat,
-        padding: CGSize,
-        calculateHeight: CalculateHeight)
+        minimumMinorDimension minimumMinorDimension: CGFloat,
+        padding: Size,
+        calculateMajorDimension: CalculateDimension)
         -> LayoutModule
     {
-        return LayoutModule { attributes, origin, width in
+        return LayoutModule { count, origin, _, minorDimension in
             // calculate the number of columns and width of each column
-            let (columnCount, cellWidth) = calculateColumns(
-                minimum: minimumWidth,
-                spacing: padding.width,
-                total: width
+            let (minorCount, cellMinor) = calculateColumns(
+                minimum: minimumMinorDimension,
+                spacing: padding.minor,
+                total: minorDimension
             )
             
-            // keep track of the current y offset for each column
-            var columns = Array(count: columnCount, repeatedValue: origin.y)
-            
-            for index in 0..<(attributes.count)
-            {
+            // keep track of the current major offset for each row or column
+            var offsets = Array(count: minorCount, repeatedValue: origin.major)
+
+            let attributes = (0..<count).map({ index -> LayoutAttributes in
                 // calculate the height of this masonry item
-                let height = calculateHeight(index: index, width: cellWidth)
+                let cellMajor = calculateMajorDimension(index: index, otherDimension: cellMinor)
                 
                 // find the shortest column
-                let column = (0..<columnCount).minElement({ lhs, rhs in columns[lhs] < columns[rhs] }) ?? 0
+                let index = (0..<minorCount).minElement({ lhs, rhs in offsets[lhs] < offsets[rhs] }) ?? 0
                 
                 // update the layout attribute frame
-                attributes[index].frame = CGRect(
-                    x: origin.x + (cellWidth + padding.width) * CGFloat(column),
-                    y: columns[column],
-                    width: cellWidth,
-                    height: height
+                let frame = Rect(
+                    origin: Point(
+                        major: offsets[index],
+                        minor: origin.minor + (cellMinor + padding.minor) * CGFloat(index)
+                    ),
+                    size: Size(major: cellMajor, minor: cellMinor)
                 )
                 
                 // offset the column height
-                columns[column] += height + padding.height
-            }
+                offsets[index] += cellMajor + padding.major
+
+                return LayoutAttributes(frame: frame)
+            })
             
-            return (columns.maxElement() ?? padding.height) - padding.height
+            return LayoutResult(
+                layoutAttributes: attributes,
+                finalOffset: (offsets.maxElement() ?? padding.major) - padding.major
+            )
         }
     }
 }

@@ -17,42 +17,51 @@ extension LayoutModule
     /**
     Creates a grid-based layout module.
     
-    The module will use the maximum number of columns that will match the `minimumWidth` and `padding` constraints,
-    keeping the actual column width as close to `minimumWidth` as possible.
+    The module will use the maximum number of rows or columns (depending on the major axis) that will match the
+    `minimumMajorDimension` and `padding` constraints, keeping the actual column width as close to
+    `minimumMajorDimension` as possible.
     
-    - parameter minimumWidth: The minimum width of each column.
-    - parameter padding:      The padding between each row and column.
-    - parameter aspectRatio:  The aspect ratio, width over height.
+    - parameter minimumMinorDimension: The minimum minor dimension of each row/column.
+    - parameter padding:               The padding between each row and column.
+    - parameter aspectRatio:           The aspect ratio, minor dimension over major dimension.
     */
     public static func grid(
-        minimumWidth minimumWidth: CGFloat,
-        padding: CGSize,
+        minimumMinorDimension minimumMinorDimension: CGFloat,
+        padding: Size,
         aspectRatio: CGFloat = 1)
         -> LayoutModule
     {
-        return LayoutModule { attributes, origin, width in
+        return LayoutModule { count, origin, majorAxis, minorDimension in
             // calculate the number of columns and width of each column
-            let (columnCount, cellWidth) = calculateColumns(
-                minimum: minimumWidth,
-                spacing: padding.width,
-                total: width
+            let (columnCount, cellMinor) = calculateColumns(
+                minimum: minimumMinorDimension,
+                spacing: padding.minor,
+                total: minorDimension
             )
             
-            let cellHeight = cellWidth / aspectRatio
+            let cellMajor = cellMinor / aspectRatio
+
+            let attributes = (0..<count).map({ index -> LayoutAttributes in
+                let majorIndex = index / columnCount, minorIndex = index % columnCount
+
+                return LayoutAttributes(frame: Rect(
+                    origin: Point(
+                        major: origin.major + (cellMajor + padding.major) * CGFloat(majorIndex),
+                        minor: origin.minor + (cellMinor + padding.minor) * CGFloat(minorIndex)
+                    ),
+                    size: Size(
+                        major: cellMajor,
+                        minor: cellMinor
+                    )
+                ))
+            })
             
-            for index in 0..<(attributes.count)
-            {
-                let row = index / columnCount, column = index % columnCount
-                
-                attributes[index].frame = CGRect(
-                    x: origin.x + (cellWidth + padding.width) * CGFloat(column),
-                    y: origin.y + CGFloat(row) * (cellHeight + padding.height),
-                    width: cellWidth,
-                    height: cellHeight
-                )
-            }
-            
-            return (attributes.last?.frame).map(CGRectGetMaxY) ?? origin.y
+            return LayoutResult(
+                layoutAttributes: attributes,
+                finalOffset: (attributes.last?.frame).map({
+                    frame in frame.origin.major + frame.size.major
+                }) ?? origin.major
+            )
         }
     }
 }
