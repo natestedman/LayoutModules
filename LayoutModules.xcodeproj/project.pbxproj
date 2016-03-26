@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		436AE7E91CAB0878008C44A8 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436AE7E81CAB0878008C44A8 /* Geometry.swift */; };
 		43B1DA361BFE804A004984FF /* LayoutModules.h in Headers */ = {isa = PBXBuildFile; fileRef = 43B1DA351BFE804A004984FF /* LayoutModules.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43B1DA3E1BFE80A6004984FF /* LayoutModuleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DA3D1BFE80A6004984FF /* LayoutModuleType.swift */; };
 		43B1DA411BFE8235004984FF /* LayoutModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DA401BFE8235004984FF /* LayoutModule.swift */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		436AE7E81CAB0878008C44A8 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
 		43B1DA321BFE804A004984FF /* LayoutModules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LayoutModules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1DA351BFE804A004984FF /* LayoutModules.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutModules.h; sourceTree = "<group>"; };
 		43B1DA371BFE804A004984FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -41,6 +43,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		436AE7E61CAB083C008C44A8 /* Geometry */ = {
+			isa = PBXGroup;
+			children = (
+				436AE7E81CAB0878008C44A8 /* Geometry.swift */,
+			);
+			name = Geometry;
+			sourceTree = "<group>";
+		};
 		43B1DA281BFE804A004984FF = {
 			isa = PBXGroup;
 			children = (
@@ -62,6 +72,7 @@
 			children = (
 				43B1DA351BFE804A004984FF /* LayoutModules.h */,
 				43B270F41BFE906500CF28DA /* Collection View */,
+				436AE7E61CAB083C008C44A8 /* Geometry */,
 				43B1DA3F1BFE80AF004984FF /* Modules */,
 				43B1DA4A1BFE89B8004984FF /* Utilities */,
 				43B1DA371BFE804A004984FF /* Info.plist */,
@@ -180,6 +191,7 @@
 				43B1DA471BFE8896004984FF /* LayoutModule+Masonry.swift in Sources */,
 				43B1DA491BFE88A7004984FF /* LayoutModule+Grid.swift in Sources */,
 				43B1DA3E1BFE80A6004984FF /* LayoutModuleType.swift in Sources */,
+				436AE7E91CAB0878008C44A8 /* Geometry.swift in Sources */,
 				43B1DA411BFE8235004984FF /* LayoutModule.swift in Sources */,
 				43B1DA4C1BFE89C6004984FF /* Functions.swift in Sources */,
 			);
