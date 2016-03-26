@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		436AE7E91CAB0878008C44A8 /* Geometry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436AE7E81CAB0878008C44A8 /* Geometry.swift */; };
+		436AE7ED1CAB0878008C44A8 /* LayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */; };
 		43B1DA361BFE804A004984FF /* LayoutModules.h in Headers */ = {isa = PBXBuildFile; fileRef = 43B1DA351BFE804A004984FF /* LayoutModules.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		43B1DA3E1BFE80A6004984FF /* LayoutModuleType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DA3D1BFE80A6004984FF /* LayoutModuleType.swift */; };
 		43B1DA411BFE8235004984FF /* LayoutModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43B1DA401BFE8235004984FF /* LayoutModule.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		436AE7E81CAB0878008C44A8 /* Geometry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Geometry.swift; sourceTree = "<group>"; };
+		436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutAttributes.swift; sourceTree = "<group>"; };
 		43B1DA321BFE804A004984FF /* LayoutModules.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = LayoutModules.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		43B1DA351BFE804A004984FF /* LayoutModules.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LayoutModules.h; sourceTree = "<group>"; };
 		43B1DA371BFE804A004984FF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -51,6 +53,14 @@
 			name = Geometry;
 			sourceTree = "<group>";
 		};
+		436AE7EB1CAB0878008C44A8 /* Layout Attributes */ = {
+			isa = PBXGroup;
+			children = (
+				436AE7EC1CAB0878008C44A8 /* LayoutAttributes.swift */,
+			);
+			name = "Layout Attributes";
+			sourceTree = "<group>";
+		};
 		43B1DA281BFE804A004984FF = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +83,7 @@
 				43B1DA351BFE804A004984FF /* LayoutModules.h */,
 				43B270F41BFE906500CF28DA /* Collection View */,
 				436AE7E61CAB083C008C44A8 /* Geometry */,
+				436AE7EB1CAB0878008C44A8 /* Layout Attributes */,
 				43B1DA3F1BFE80AF004984FF /* Modules */,
 				43B1DA4A1BFE89B8004984FF /* Utilities */,
 				43B1DA371BFE804A004984FF /* Info.plist */,
@@ -186,6 +197,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436AE7ED1CAB0878008C44A8 /* LayoutAttributes.swift in Sources */,
 				43B270F31BFE905B00CF28DA /* LayoutModulesCollectionViewLayout.swift in Sources */,
 				43B1DA451BFE8873004984FF /* LayoutModule+Table.swift in Sources */,
 				43B1DA471BFE8896004984FF /* LayoutModule+Masonry.swift in Sources */,
