@@ -41,6 +41,23 @@ public struct Point
         self.minor = minor
     }
 
+    /**
+     Initializes a point structure from a Core Graphics point.
+
+     - parameter CGPoint:   A Core Graphics point.
+     - parameter majorAxis: The major axis to use.
+     */
+    public init(CGPoint: CoreGraphics.CGPoint, majorAxis: Axis)
+    {
+        switch majorAxis
+        {
+        case .Horizontal:
+            self = Point(major: CGPoint.x, minor: CGPoint.y)
+        case .Vertical:
+            self = Point(major: CGPoint.y, minor: CGPoint.x)
+        }
+    }
+
     // MARK: - Coordinates
 
     /// The major coordinate of the point.
@@ -90,6 +107,23 @@ public struct Size
         self.minor = minor
     }
 
+    /**
+     Initializes a size structure from a Core Graphics size.
+
+     - parameter CGSize:    A Core Graphics size.
+     - parameter majorAxis: The major axis to use.
+     */
+    public init(CGSize: CoreGraphics.CGSize, majorAxis: Axis)
+    {
+        switch majorAxis
+        {
+        case .Horizontal:
+            self = Size(major: CGSize.width, minor: CGSize.height)
+        case .Vertical:
+            self = Size(major: CGSize.height, minor: CGSize.width)
+        }
+    }
+
     // MARK: - Coordinates
 
     /// The major dimension of the size.
@@ -137,6 +171,20 @@ public struct Rect
     {
         self.origin = origin
         self.size = size
+    }
+
+    /**
+     Initializes a rect structure from a Core Graphics rect.
+
+     - parameter CGRect:    A Core Graphics rect.
+     - parameter majorAxis: The major axis to use.
+     */
+    public init(CGRect: CoreGraphics.CGRect, majorAxis: Axis)
+    {
+        self.init(
+            origin: Point(CGPoint: CGRect.origin, majorAxis: majorAxis),
+            size: Size(CGSize: CGRect.size, majorAxis: majorAxis)
+        )
     }
 
     // MARK: - Components
