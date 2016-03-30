@@ -26,7 +26,7 @@ extension LayoutModule
         return LayoutModule { count, origin, majorAxis, minorDimension in
             let module = majorAxis == .Horizontal ? horizontal : vertical
 
-            return module.prepareLayoutAttributes(
+            return module.layoutAttributesWith(
                 count: count,
                 origin: origin,
                 majorAxis: majorAxis,

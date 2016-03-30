@@ -71,7 +71,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
                 let module = moduleForSection?(section: section) ?? LayoutModule.table(majorDimension: 44)
 
                 let items = collectionView.numberOfItemsInSection(section)
-                let result = module.prepareLayoutAttributes(
+                let result = module.layoutAttributesWith(
                     count: items,
                     origin: origin,
                     majorAxis: majorAxis,

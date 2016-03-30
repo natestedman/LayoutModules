@@ -26,7 +26,7 @@ public protocol LayoutModuleType
      - returns: A layout result for the section, including the layout attributes for each item, and the new initial
                 major direction offset for the next section.
      */
-    func prepareLayoutAttributes(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
+    func layoutAttributesWith(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
         -> LayoutResult
 }
 
@@ -55,7 +55,7 @@ extension LayoutModuleType
             let insetOrigin = Point(major: origin.major + minMajor, minor: origin.minor + minMinor)
             let insetMinorDimension = minorDimension - minMinor - maxMinor
             
-            let result = self.prepareLayoutAttributes(
+            let result = self.layoutAttributesWith(
                 count: count,
                 origin: insetOrigin,
                 majorAxis: majorAxis,
@@ -82,7 +82,7 @@ extension LayoutModuleType
     public func translate(major major: CGFloat = 0, minor: CGFloat = 0) -> LayoutModule
     {
         return LayoutModule { count, origin, majorAxis, minorDimension in
-            self.prepareLayoutAttributes(
+            self.layoutAttributesWith(
                 count: count,
                 origin: Point(major: origin.major + major, minor: origin.minor + minor),
                 majorAxis: majorAxis,

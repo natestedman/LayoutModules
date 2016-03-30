@@ -50,7 +50,7 @@ public struct LayoutModule
      */
     public init(layoutModule: LayoutModuleType)
     {
-        self.layout = layoutModule.prepareLayoutAttributes
+        self.layout = layoutModule.layoutAttributesWith
     }
 }
 
@@ -70,7 +70,7 @@ extension LayoutModule: LayoutModuleType
      - returns: A layout result for the section, including the layout attributes for each item, and the new initial
                 major direction offset for the next section.
      */
-    public func prepareLayoutAttributes(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
+    public func layoutAttributesWith(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
         -> LayoutResult
     {
         return layout(count: count, origin: origin, majorAxis: majorAxis, minorDimension: minorDimension)
