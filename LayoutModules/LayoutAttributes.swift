@@ -43,6 +43,24 @@ public struct LayoutAttributes
         self.hidden = hidden
     }
 
+    /**
+     Initializes a layout attributes value from a UIKit layout attributes object.
+
+     - parameter layoutAttributes: The layout attributes object.
+     - parameter majorAxis:        The major axis to use when converting the `frame` property.
+     */
+    internal init(layoutAttributes: UICollectionViewLayoutAttributes, majorAxis: Axis)
+    {
+        self.init(
+            frame: Rect(CGRect: layoutAttributes.frame, majorAxis: majorAxis),
+            transform3D: layoutAttributes.transform3D,
+            transform: layoutAttributes.transform,
+            alpha: layoutAttributes.alpha,
+            zIndex: layoutAttributes.zIndex,
+            hidden: layoutAttributes.hidden
+        )
+    }
+
     // MARK: - Attributes
 
     /// The frame for the layout attributes.
