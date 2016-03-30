@@ -25,7 +25,7 @@ class InitialFinalViewController: UIViewController
                     return round(1 / (CGFloat(index % 4) + 1) * minorDimension)
                 }
             )
-            .inset(minMajor: 10, maxMajor: 10, minMinor: 10, maxMinor: 10)
+            .inset(10)
             .withInitialTransition({ _, attributes in
                 var mutableAttributes = attributes
                 mutableAttributes.transform = CGAffineTransformRotate(CGAffineTransformMakeScale(0.5, 0.5), 1)

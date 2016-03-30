@@ -138,6 +138,18 @@ extension LayoutModuleType
             return LayoutResult(layoutAttributes: result.layoutAttributes, finalOffset: result.finalOffset + maxMajor)
         }
     }
+
+    /**
+     Produces a new layout module by insetting the layout module equally in all directions.
+
+     - parameter inset: The amount to inset.
+
+     - returns: A new layout module, derived from the module this function was called on.
+     */
+    public func inset(inset: CGFloat) -> LayoutModule
+    {
+        return self.inset(minMajor: inset, maxMajor: inset, minMinor: inset, maxMinor: inset)
+    }
 }
 
 extension LayoutModuleType
