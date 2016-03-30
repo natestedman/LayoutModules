@@ -17,8 +17,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool
     {
+        func controller(viewController: UIViewController, title: String) -> UIViewController
+        {
+            viewController.title = title
+            return UINavigationController(rootViewController: viewController)
+        }
+
+        let tabBarController = UITabBarController()
+        tabBarController.viewControllers = [
+            controller(ModulesViewController(), title: "Modules"),
+            controller(InitialFinalViewController(), title: "Insert & Delete")
+        ]
+
         window?.backgroundColor = UIColor.whiteColor()
-        window?.rootViewController = UINavigationController(rootViewController: ViewController())
+        window?.rootViewController = tabBarController
         window?.makeKeyAndVisible()
         
         return true

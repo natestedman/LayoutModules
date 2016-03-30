@@ -11,7 +11,7 @@
 import LayoutModules
 import UIKit
 
-class ViewController: UIViewController
+class ModulesViewController: UIViewController
 {
     override func loadView()
     {
@@ -24,12 +24,6 @@ class ViewController: UIViewController
         collectionView.registerClass(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.dataSource = self
         self.view = collectionView
-    }
-    
-    override func viewDidLoad()
-    {
-        super.viewDidLoad()
-        self.title = "LayoutModules"
     }
     
     let modules = [
@@ -49,7 +43,7 @@ class ViewController: UIViewController
     ]
 }
 
-extension ViewController: UICollectionViewDataSource
+extension ModulesViewController: UICollectionViewDataSource
 {
     func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int
     {
