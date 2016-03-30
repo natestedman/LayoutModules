@@ -1,7 +1,7 @@
 language: objective-c
 xcode_project: LayoutModules.xcodeproj
 xcode_scheme: LayoutModules
-osx_image: xcode7.1
+osx_image: xcode7.3
 before_install: true
 install: true
 git:
