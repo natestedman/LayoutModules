@@ -28,6 +28,79 @@ public protocol LayoutModuleType
      */
     func layoutAttributesWith(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
         -> LayoutResult
+
+    // MARK: - Initial & Final Layout Attributes
+
+    /**
+     Provides the initial layout attributes for an appearing item.
+
+     This function has a default implementation, which returns `nil`.
+
+     - parameter indexPath:  The index path of the appearing item.
+     - parameter attributes: The layout attributes of the appearing item.
+
+     - returns: A layout attributes value, or `nil`.
+     */
+    func initialLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+
+    /**
+     Provides the final layout attributes for an disappearing item.
+
+     This function has a default implementation, which returns `nil`.
+
+     - parameter indexPath:  The index path of the disappearing item.
+     - parameter attributes: The layout attributes of the disappearing item.
+
+     - returns: A layout attributes value, or `nil`.
+     */
+    func finalLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+}
+
+extension LayoutModuleType
+{
+    // MARK: - Default Implementations for Initial & Final Layout Attributes
+    public func initialLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    {
+        return nil
+    }
+
+    public func finalLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    {
+        return nil
+    }
+}
+
+extension LayoutModuleType
+{
+    // MARK: - Adding Initial & Final Layout Attributes
+
+    /**
+     Creates a layout module that overrides the initial transition behavior of the receiver.
+
+     - parameter transition: A function that produces initial layout attributes.
+     */
+    public func withInitialTransition(transition: LayoutModule.TransitionLayout) -> LayoutModule
+    {
+        return LayoutModule(
+            layout: layoutAttributesWith,
+            initialLayout: transition,
+            finalLayout: finalLayoutAttributesFor
+        )
+    }
+
+    /**
+     Creates a layout module that overrides the final transition behavior of the receiver.
+
+     - parameter transition: A function that produces final layout attributes.
+     */
+    public func withFinalTransition(transition: LayoutModule.TransitionLayout) -> LayoutModule
+    {
+        return LayoutModule(
+            layout: layoutAttributesWith,
+            initialLayout: initialLayoutAttributesFor,
+            finalLayout: transition
+        )
+    }
 }
 
 extension LayoutModuleType

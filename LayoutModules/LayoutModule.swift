@@ -24,33 +24,60 @@ public struct LayoutModule
         majorAxis: Axis,
         minorDimension: CGFloat
     ) -> LayoutResult
-    
+
+    /// A function that provides the initial or final layout attributes for an index path, if any.
+    public typealias TransitionLayout = (NSIndexPath, LayoutAttributes) -> LayoutAttributes?
+
     /// A function type for dynamically calculating a dimension of a given item.
     public typealias CalculateDimension = (index: Int, axis: Axis, otherDimension: CGFloat) -> CGFloat
-    
+
     /// The layout function.
     private let layout: Layout
-    
+
+    /// The initial layout attributes function.
+    private let initialLayout: TransitionLayout?
+
+    /// The final layout attributes function.
+    private let finalLayout: TransitionLayout?
+
     // MARK: - Initialization
-    
+
     /**
     Initializes a layout module.
-    
+
     - parameter layout: The function to use for layout.
     */
     public init(layout: Layout)
     {
         self.layout = layout
+        self.initialLayout = { _ in nil }
+        self.finalLayout = { _ in nil }
     }
-    
+
+    /**
+     Initializes a layout module.
+
+     - parameter layout:        The function to use for layout.
+     - parameter initialLayout: The function to use for initial layout attributes.
+     - parameter finalLayout:   The function to use for final layout attributes.
+     */
+    public init(layout: Layout, initialLayout: TransitionLayout? = nil, finalLayout: TransitionLayout? = nil)
+    {
+        self.layout = layout
+        self.initialLayout = initialLayout
+        self.finalLayout = finalLayout
+    }
+
     /**
      Initializes a layout module, by erasing the type of another module.
-     
+
      - parameter layoutModule: The layout module.
      */
     public init(layoutModule: LayoutModuleType)
     {
         self.layout = layoutModule.layoutAttributesWith
+        self.initialLayout = layoutModule.initialLayoutAttributesFor
+        self.finalLayout = layoutModule.finalLayoutAttributesFor
     }
 }
 
@@ -58,10 +85,10 @@ public struct LayoutModule
 extension LayoutModule: LayoutModuleType
 {
     // MARK: - Layout
-    
+
     /**
      Performs layout for a section.
-     
+
      - parameter attributes:     The array of attributes to update.
      - parameter origin:         The origin of the module.
      - parameter majorAxis:      The major axis for the layout.
@@ -74,5 +101,33 @@ extension LayoutModule: LayoutModuleType
         -> LayoutResult
     {
         return layout(count: count, origin: origin, majorAxis: majorAxis, minorDimension: minorDimension)
+    }
+
+    // MARK: - Initial & Final Layout Attributes
+
+    /**
+     Provides the initial layout attributes for an appearing item.
+
+     - parameter indexPath:  The index path of the appearing item.
+     - parameter attributes: The layout attributes of the appearing item.
+
+     - returns: A layout attributes value, or `nil`.
+     */
+    public func initialLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    {
+        return initialLayout?(indexPath, attributes)
+    }
+
+    /**
+     Provides the final layout attributes for an disappearing item.
+
+     - parameter indexPath:  The index path of the disappearing item.
+     - parameter attributes: The layout attributes of the disappearing item.
+
+     - returns: A layout attributes value, or `nil`.
+     */
+    public func finalLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    {
+        return finalLayout?(indexPath, attributes)
     }
 }

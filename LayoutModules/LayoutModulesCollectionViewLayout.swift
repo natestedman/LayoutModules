@@ -96,6 +96,44 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
             self.layoutAttributes = []
         }
     }
+
+    /**
+     Returns the initial layout attributes for the item at the specified index path.
+
+     - parameter itemIndexPath: The index path.
+     */
+    public override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath)
+        -> UICollectionViewLayoutAttributes?
+    {
+        guard let layoutAttributes = super.initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath) else {
+            return nil
+        }
+
+        let attributes = LayoutAttributes(layoutAttributes: layoutAttributes, majorAxis: majorAxis)
+
+        return moduleForSection?(section: itemIndexPath.section)
+            .initialLayoutAttributesFor(itemIndexPath, attributes: attributes)?
+            .collectionViewLayoutAttributesForIndexPath(itemIndexPath, withMajorAxis: majorAxis)
+    }
+
+    /**
+     Returns the final layout attributes for the item at the specified index path.
+
+     - parameter itemIndexPath: The index path.
+     */
+    public override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath)
+        -> UICollectionViewLayoutAttributes?
+    {
+        guard let layoutAttributes = super.finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath) else {
+            return nil
+        }
+
+        let attributes = LayoutAttributes(layoutAttributes: layoutAttributes, majorAxis: majorAxis)
+
+        return moduleForSection?(section: itemIndexPath.section)
+            .finalLayoutAttributesFor(itemIndexPath, attributes: attributes)?
+            .collectionViewLayoutAttributesForIndexPath(itemIndexPath, withMajorAxis: majorAxis)
+    }
     
     /// Determines if the layout should be invalidated, based on a bounds change.
     ///
