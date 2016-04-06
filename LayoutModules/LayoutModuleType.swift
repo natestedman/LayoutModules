@@ -34,8 +34,6 @@ public protocol LayoutModuleType
     /**
      Provides the initial layout attributes for an appearing item.
 
-     This function has a default implementation, which returns `nil`.
-
      - parameter indexPath:  The index path of the appearing item.
      - parameter attributes: The layout attributes of the appearing item.
 
@@ -45,8 +43,6 @@ public protocol LayoutModuleType
 
     /**
      Provides the final layout attributes for an disappearing item.
-
-     This function has a default implementation, which returns `nil`.
 
      - parameter indexPath:  The index path of the disappearing item.
      - parameter attributes: The layout attributes of the disappearing item.
@@ -59,11 +55,14 @@ public protocol LayoutModuleType
 extension LayoutModuleType
 {
     // MARK: - Default Implementations for Initial & Final Layout Attributes
+
+    /// The default implementation returns `nil`.
     public func initialLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return nil
     }
 
+    /// The default implementation returns `nil`.
     public func finalLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return nil
