@@ -1,0 +1,18 @@
+custom_categories:
+    - name: Collection View Layout
+      children:
+          - LayoutModulesCollectionViewLayout
+
+    - name: Layout Modules
+      children:
+          - LayoutModule
+          - LayoutModuleType
+          - LayoutAttributes
+          - LayoutResult
+
+    - name: Geometry
+      children:
+          - Axis
+          - Point
+          - Rect
+          - Size
