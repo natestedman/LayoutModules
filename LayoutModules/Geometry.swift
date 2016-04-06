@@ -24,7 +24,7 @@ public enum Axis
 
 // MARK: - Points
 
-/// A axis-agnostic point structure.
+/// An axis-agnostic point structure.
 public struct Point
 {
     // MARK: - Initialization
@@ -90,7 +90,7 @@ extension Point
 
 // MARK: - Sizes
 
-/// A axis-agnostic size structure.
+/// An axis-agnostic size structure.
 public struct Size
 {
     // MARK: - Initialization
