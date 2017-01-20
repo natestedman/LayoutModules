@@ -76,14 +76,14 @@ extension Point
 
      - parameter majorAxis: The major axis to use.
      */
-    public func CGPointWithMajorAxis(_ majorAxis: Axis) -> CGPoint
+    public func CGPoint(majorAxis: Axis) -> CoreGraphics.CGPoint
     {
         switch majorAxis
         {
         case .horizontal:
-            return CGPoint(x: major, y: minor)
+            return CoreGraphics.CGPoint(x: major, y: minor)
         case .vertical:
-            return CGPoint(x: minor, y: major)
+            return CoreGraphics.CGPoint(x: minor, y: major)
         }
     }
 }
@@ -142,14 +142,14 @@ extension Size
 
      - parameter majorAxis: The major axis to use.
      */
-    public func CGSizeWithMajorAxis(_ majorAxis: Axis) -> CGSize
+    public func CGSize(majorAxis: Axis) -> CoreGraphics.CGSize
     {
         switch majorAxis
         {
         case .horizontal:
-            return CGSize(width: major, height: minor)
+            return CoreGraphics.CGSize(width: major, height: minor)
         case .vertical:
-            return CGSize(width: minor, height: major)
+            return CoreGraphics.CGSize(width: minor, height: major)
         }
     }
 }
@@ -205,11 +205,11 @@ extension Rect
 
      - parameter majorAxis: The major axis to use.
      */
-    public func CGRectWithMajorAxis(_ majorAxis: Axis) -> CGRect
+    public func CGRect(majorAxis: Axis) -> CoreGraphics.CGRect
     {
-        return CGRect(
-            origin: origin.CGPointWithMajorAxis(majorAxis),
-            size: size.CGSizeWithMajorAxis(majorAxis)
+        return CoreGraphics.CGRect(
+            origin: origin.CGPoint(majorAxis: majorAxis),
+            size: size.CGSize(majorAxis: majorAxis)
         )
     }
 }

@@ -88,7 +88,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
                 })
             })
 
-            self.contentSize = Size(major: origin.major, minor: minorDimension).CGSizeWithMajorAxis(majorAxis)
+            self.contentSize = Size(major: origin.major, minor: minorDimension).CGSize(majorAxis: majorAxis)
         }
         else
         {

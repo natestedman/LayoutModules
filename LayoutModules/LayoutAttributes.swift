@@ -88,7 +88,7 @@ extension LayoutAttributes
         -> UICollectionViewLayoutAttributes
     {
         let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
-        attributes.frame = frame.CGRectWithMajorAxis(majorAxis)
+        attributes.frame = frame.CGRect(majorAxis: majorAxis)
         attributes.transform3D = transform3D
         attributes.transform = transform
         attributes.alpha = alpha
