@@ -73,16 +73,16 @@ public struct LayoutModule
 
      - parameter layoutModule: The layout module.
      */
-    public init(layoutModule: LayoutModuleType)
+    public init(layoutModule: LayoutModuleProtocol)
     {
-        self.layout = layoutModule.layoutAttributesWith
-        self.initialLayout = layoutModule.initialLayoutAttributesFor
-        self.finalLayout = layoutModule.finalLayoutAttributesFor
+        self.layout = layoutModule.layoutResult
+        self.initialLayout = layoutModule.initialLayoutAttributes
+        self.finalLayout = layoutModule.finalLayoutAttributes
     }
 }
 
 // MARK: - LayoutModuleType
-extension LayoutModule: LayoutModuleType
+extension LayoutModule: LayoutModuleProtocol
 {
     // MARK: - Layout
 
@@ -97,8 +97,7 @@ extension LayoutModule: LayoutModuleType
      - returns: A layout result for the section, including the layout attributes for each item, and the new initial
                 major direction offset for the next section.
      */
-    public func layoutAttributesWith(count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
-        -> LayoutResult
+    public func layoutResult(count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat) -> LayoutResult
     {
         return layout(count, origin, majorAxis, minorDimension)
     }
@@ -113,7 +112,7 @@ extension LayoutModule: LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    public func initialLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func initialLayoutAttributes(indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return initialLayout?(indexPath, attributes)
     }
@@ -126,7 +125,7 @@ extension LayoutModule: LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    public func finalLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func finalLayoutAttributes(indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return finalLayout?(indexPath, attributes)
     }

@@ -11,7 +11,7 @@
 import UIKit
 
 /// A base type for layout modules.
-public protocol LayoutModuleType
+public protocol LayoutModuleProtocol
 {
     // MARK: - Layout
     
@@ -26,8 +26,7 @@ public protocol LayoutModuleType
      - returns: A layout result for the section, including the layout attributes for each item, and the new initial
                 major direction offset for the next section.
      */
-    func layoutAttributesWith(count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
-        -> LayoutResult
+    func layoutResult(count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat) -> LayoutResult
 
     // MARK: - Initial & Final Layout Attributes
 
@@ -39,7 +38,7 @@ public protocol LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    func initialLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    func initialLayoutAttributes(indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
 
     /**
      Provides the final layout attributes for an disappearing item.
@@ -49,27 +48,27 @@ public protocol LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    func finalLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    func finalLayoutAttributes(indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
 }
 
-extension LayoutModuleType
+extension LayoutModuleProtocol
 {
     // MARK: - Default Implementations for Initial & Final Layout Attributes
 
     /// The default implementation returns `nil`.
-    public func initialLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func initialLayoutAttributes(indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return nil
     }
 
     /// The default implementation returns `nil`.
-    public func finalLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func finalLayoutAttributes(indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return nil
     }
 }
 
-extension LayoutModuleType
+extension LayoutModuleProtocol
 {
     // MARK: - Adding Initial & Final Layout Attributes
 
@@ -81,9 +80,9 @@ extension LayoutModuleType
     public func withInitialTransition(_ transition: @escaping LayoutModule.TransitionLayout) -> LayoutModule
     {
         return LayoutModule(
-            layout: layoutAttributesWith,
+            layout: layoutResult,
             initialLayout: transition,
-            finalLayout: finalLayoutAttributesFor
+            finalLayout: finalLayoutAttributes
         )
     }
 
@@ -95,14 +94,14 @@ extension LayoutModuleType
     public func withFinalTransition(_ transition: @escaping LayoutModule.TransitionLayout) -> LayoutModule
     {
         return LayoutModule(
-            layout: layoutAttributesWith,
-            initialLayout: initialLayoutAttributesFor,
+            layout: layoutResult,
+            initialLayout: initialLayoutAttributes,
             finalLayout: transition
         )
     }
 }
 
-extension LayoutModuleType
+extension LayoutModuleProtocol
 {
     // MARK: - Insets
 
@@ -127,7 +126,7 @@ extension LayoutModuleType
             let insetOrigin = Point(major: origin.major + minMajor, minor: origin.minor + minMinor)
             let insetMinorDimension = minorDimension - minMinor - maxMinor
             
-            let result = self.layoutAttributesWith(
+            let result = self.layoutResult(
                 count: count,
                 origin: insetOrigin,
                 majorAxis: majorAxis,
@@ -145,13 +144,13 @@ extension LayoutModuleType
 
      - returns: A new layout module, derived from the module this function was called on.
      */
-    public func inset(_ inset: CGFloat) -> LayoutModule
+    public func inset(all inset: CGFloat) -> LayoutModule
     {
         return self.inset(minMajor: inset, maxMajor: inset, minMinor: inset, maxMinor: inset)
     }
 }
 
-extension LayoutModuleType
+extension LayoutModuleProtocol
 {
     // MARK: - Transforms
     
@@ -166,7 +165,7 @@ extension LayoutModuleType
     public func translate(major: CGFloat = 0, minor: CGFloat = 0) -> LayoutModule
     {
         return LayoutModule { count, origin, majorAxis, minorDimension in
-            self.layoutAttributesWith(
+            self.layoutResult(
                 count: count,
                 origin: Point(major: origin.major + major, minor: origin.minor + minor),
                 majorAxis: majorAxis,

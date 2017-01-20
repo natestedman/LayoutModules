@@ -20,7 +20,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     
     - parameter moduleForSection: A function to determine the layout module for each section.
     */
-    public convenience init(majorAxis: Axis, moduleForSection: @escaping (_ section: Int) -> LayoutModuleType)
+    public convenience init(majorAxis: Axis, moduleForSection: @escaping (_ section: Int) -> LayoutModuleProtocol)
     {
         self.init()
         self.majorAxis = majorAxis
@@ -40,7 +40,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     /// A function to determine the layout module for each section.
     ///
     /// This property should be assigned a value by clients before performing layout.
-    public var moduleForSection: ((_ section: Int) -> LayoutModuleType)?
+    public var moduleForSection: ((_ section: Int) -> LayoutModuleProtocol)?
     {
         didSet { invalidateLayout() }
     }
@@ -71,7 +71,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
                 let module = moduleForSection?(section) ?? LayoutModule.table(majorDimension: 44)
 
                 let items = collectionView.numberOfItems(inSection: section)
-                let result = module.layoutAttributesWith(
+                let result = module.layoutResult(
                     count: items,
                     origin: origin,
                     majorAxis: majorAxis,
@@ -112,7 +112,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
         let attributes = LayoutAttributes(layoutAttributes: layoutAttributes, majorAxis: majorAxis)
 
         return moduleForSection?(itemIndexPath.section)
-            .initialLayoutAttributesFor(itemIndexPath, attributes: attributes)?
+            .initialLayoutAttributes(indexPath: itemIndexPath, attributes: attributes)?
             .collectionViewLayoutAttributesForIndexPath(itemIndexPath, withMajorAxis: majorAxis)
     }
 
@@ -131,7 +131,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
         let attributes = LayoutAttributes(layoutAttributes: layoutAttributes, majorAxis: majorAxis)
 
         return moduleForSection?(itemIndexPath.section)
-            .finalLayoutAttributesFor(itemIndexPath, attributes: attributes)?
+            .finalLayoutAttributes(indexPath: itemIndexPath, attributes: attributes)?
             .collectionViewLayoutAttributesForIndexPath(itemIndexPath, withMajorAxis: majorAxis)
     }
     
