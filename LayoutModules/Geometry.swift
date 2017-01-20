@@ -16,10 +16,10 @@ import CoreGraphics
 public enum Axis
 {
     /// The horizontal axis.
-    case Horizontal
+    case horizontal
 
     /// The vertical axis.
-    case Vertical
+    case vertical
 }
 
 // MARK: - Points
@@ -51,9 +51,9 @@ public struct Point
     {
         switch majorAxis
         {
-        case .Horizontal:
+        case .horizontal:
             self = Point(major: CGPoint.x, minor: CGPoint.y)
-        case .Vertical:
+        case .vertical:
             self = Point(major: CGPoint.y, minor: CGPoint.x)
         }
     }
@@ -76,13 +76,13 @@ extension Point
 
      - parameter majorAxis: The major axis to use.
      */
-    public func CGPointWithMajorAxis(majorAxis: Axis) -> CGPoint
+    public func CGPointWithMajorAxis(_ majorAxis: Axis) -> CGPoint
     {
         switch majorAxis
         {
-        case .Horizontal:
+        case .horizontal:
             return CGPoint(x: major, y: minor)
-        case .Vertical:
+        case .vertical:
             return CGPoint(x: minor, y: major)
         }
     }
@@ -117,9 +117,9 @@ public struct Size
     {
         switch majorAxis
         {
-        case .Horizontal:
+        case .horizontal:
             self = Size(major: CGSize.width, minor: CGSize.height)
-        case .Vertical:
+        case .vertical:
             self = Size(major: CGSize.height, minor: CGSize.width)
         }
     }
@@ -142,13 +142,13 @@ extension Size
 
      - parameter majorAxis: The major axis to use.
      */
-    public func CGSizeWithMajorAxis(majorAxis: Axis) -> CGSize
+    public func CGSizeWithMajorAxis(_ majorAxis: Axis) -> CGSize
     {
         switch majorAxis
         {
-        case .Horizontal:
+        case .horizontal:
             return CGSize(width: major, height: minor)
-        case .Vertical:
+        case .vertical:
             return CGSize(width: minor, height: major)
         }
     }
@@ -205,7 +205,7 @@ extension Rect
 
      - parameter majorAxis: The major axis to use.
      */
-    public func CGRectWithMajorAxis(majorAxis: Axis) -> CGRect
+    public func CGRectWithMajorAxis(_ majorAxis: Axis) -> CGRect
     {
         return CGRect(
             origin: origin.CGPointWithMajorAxis(majorAxis),

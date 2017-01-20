@@ -10,7 +10,7 @@
 
 import CoreGraphics
 
-internal func calculateColumns(minimum minimum: CGFloat, spacing: CGFloat, total: CGFloat) -> (Int, CGFloat)
+internal func calculateColumns(minimum: CGFloat, spacing: CGFloat, total: CGFloat) -> (Int, CGFloat)
 {
     var count = 1
     

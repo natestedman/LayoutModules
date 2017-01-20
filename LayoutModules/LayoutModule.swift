@@ -19,26 +19,26 @@ public struct LayoutModule
     
     /// A layout function, which implements the functionality of `ModuleType`.
     public typealias Layout = (
-        count: Int,
-        origin: Point,
-        majorAxis: Axis,
-        minorDimension: CGFloat
+        _ count: Int,
+        _ origin: Point,
+        _ majorAxis: Axis,
+        _ minorDimension: CGFloat
     ) -> LayoutResult
 
     /// A function that provides the initial or final layout attributes for an index path, if any.
-    public typealias TransitionLayout = (NSIndexPath, LayoutAttributes) -> LayoutAttributes?
+    public typealias TransitionLayout = (IndexPath, LayoutAttributes) -> LayoutAttributes?
 
     /// A function type for dynamically calculating a dimension of a given item.
-    public typealias CalculateDimension = (index: Int, axis: Axis, otherDimension: CGFloat) -> CGFloat
+    public typealias CalculateDimension = (_ index: Int, _ axis: Axis, _ otherDimension: CGFloat) -> CGFloat
 
     /// The layout function.
-    private let layout: Layout
+    fileprivate let layout: Layout
 
     /// The initial layout attributes function.
-    private let initialLayout: TransitionLayout?
+    fileprivate let initialLayout: TransitionLayout?
 
     /// The final layout attributes function.
-    private let finalLayout: TransitionLayout?
+    fileprivate let finalLayout: TransitionLayout?
 
     // MARK: - Initialization
 
@@ -47,7 +47,7 @@ public struct LayoutModule
 
     - parameter layout: The function to use for layout.
     */
-    public init(layout: Layout)
+    public init(layout: @escaping Layout)
     {
         self.layout = layout
         self.initialLayout = { _ in nil }
@@ -61,7 +61,7 @@ public struct LayoutModule
      - parameter initialLayout: The function to use for initial layout attributes.
      - parameter finalLayout:   The function to use for final layout attributes.
      */
-    public init(layout: Layout, initialLayout: TransitionLayout? = nil, finalLayout: TransitionLayout? = nil)
+    public init(layout: @escaping Layout, initialLayout: TransitionLayout? = nil, finalLayout: TransitionLayout? = nil)
     {
         self.layout = layout
         self.initialLayout = initialLayout
@@ -97,10 +97,10 @@ extension LayoutModule: LayoutModuleType
      - returns: A layout result for the section, including the layout attributes for each item, and the new initial
                 major direction offset for the next section.
      */
-    public func layoutAttributesWith(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
+    public func layoutAttributesWith(count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
         -> LayoutResult
     {
-        return layout(count: count, origin: origin, majorAxis: majorAxis, minorDimension: minorDimension)
+        return layout(count, origin, majorAxis, minorDimension)
     }
 
     // MARK: - Initial & Final Layout Attributes
@@ -113,7 +113,7 @@ extension LayoutModule: LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    public func initialLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func initialLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return initialLayout?(indexPath, attributes)
     }
@@ -126,7 +126,7 @@ extension LayoutModule: LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    public func finalLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func finalLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return finalLayout?(indexPath, attributes)
     }

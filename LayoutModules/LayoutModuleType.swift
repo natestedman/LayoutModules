@@ -26,7 +26,7 @@ public protocol LayoutModuleType
      - returns: A layout result for the section, including the layout attributes for each item, and the new initial
                 major direction offset for the next section.
      */
-    func layoutAttributesWith(count count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
+    func layoutAttributesWith(count: Int, origin: Point, majorAxis: Axis, minorDimension: CGFloat)
         -> LayoutResult
 
     // MARK: - Initial & Final Layout Attributes
@@ -39,7 +39,7 @@ public protocol LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    func initialLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    func initialLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
 
     /**
      Provides the final layout attributes for an disappearing item.
@@ -49,7 +49,7 @@ public protocol LayoutModuleType
 
      - returns: A layout attributes value, or `nil`.
      */
-    func finalLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    func finalLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
 }
 
 extension LayoutModuleType
@@ -57,13 +57,13 @@ extension LayoutModuleType
     // MARK: - Default Implementations for Initial & Final Layout Attributes
 
     /// The default implementation returns `nil`.
-    public func initialLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func initialLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return nil
     }
 
     /// The default implementation returns `nil`.
-    public func finalLayoutAttributesFor(indexPath: NSIndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
+    public func finalLayoutAttributesFor(_ indexPath: IndexPath, attributes: LayoutAttributes) -> LayoutAttributes?
     {
         return nil
     }
@@ -78,7 +78,7 @@ extension LayoutModuleType
 
      - parameter transition: A function that produces initial layout attributes.
      */
-    public func withInitialTransition(transition: LayoutModule.TransitionLayout) -> LayoutModule
+    public func withInitialTransition(_ transition: @escaping LayoutModule.TransitionLayout) -> LayoutModule
     {
         return LayoutModule(
             layout: layoutAttributesWith,
@@ -92,7 +92,7 @@ extension LayoutModuleType
 
      - parameter transition: A function that produces final layout attributes.
      */
-    public func withFinalTransition(transition: LayoutModule.TransitionLayout) -> LayoutModule
+    public func withFinalTransition(_ transition: @escaping LayoutModule.TransitionLayout) -> LayoutModule
     {
         return LayoutModule(
             layout: layoutAttributesWith,
@@ -118,7 +118,7 @@ extension LayoutModuleType
      
      - returns: A new layout module, derived from the module this function was called on.
      */
-    public func inset(minMajor minMajor: CGFloat = 0,
+    public func inset(minMajor: CGFloat = 0,
                       maxMajor: CGFloat = 0,
                       minMinor: CGFloat = 0,
                       maxMinor: CGFloat = 0) -> LayoutModule
@@ -145,7 +145,7 @@ extension LayoutModuleType
 
      - returns: A new layout module, derived from the module this function was called on.
      */
-    public func inset(inset: CGFloat) -> LayoutModule
+    public func inset(_ inset: CGFloat) -> LayoutModule
     {
         return self.inset(minMajor: inset, maxMajor: inset, minMinor: inset, maxMinor: inset)
     }
@@ -163,7 +163,7 @@ extension LayoutModuleType
     
     - returns: A new layout module, derived from the module this function was called on.
     */
-    public func translate(major major: CGFloat = 0, minor: CGFloat = 0) -> LayoutModule
+    public func translate(major: CGFloat = 0, minor: CGFloat = 0) -> LayoutModule
     {
         return LayoutModule { count, origin, majorAxis, minorDimension in
             self.layoutAttributesWith(

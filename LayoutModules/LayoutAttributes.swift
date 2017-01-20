@@ -30,7 +30,7 @@ public struct LayoutAttributes
      */
     public init(frame: Rect,
                 transform3D: CATransform3D = CATransform3DIdentity,
-                transform: CGAffineTransform = CGAffineTransformIdentity,
+                transform: CGAffineTransform = CGAffineTransform.identity,
                 alpha: CGFloat = 1,
                 zIndex: Int = 0,
                 hidden: Bool = false)
@@ -57,7 +57,7 @@ public struct LayoutAttributes
             transform: layoutAttributes.transform,
             alpha: layoutAttributes.alpha,
             zIndex: layoutAttributes.zIndex,
-            hidden: layoutAttributes.hidden
+            hidden: layoutAttributes.isHidden
         )
     }
 
@@ -84,16 +84,16 @@ public struct LayoutAttributes
 
 extension LayoutAttributes
 {
-    internal func collectionViewLayoutAttributesForIndexPath(indexPath: NSIndexPath, withMajorAxis majorAxis: Axis)
+    internal func collectionViewLayoutAttributesForIndexPath(_ indexPath: IndexPath, withMajorAxis majorAxis: Axis)
         -> UICollectionViewLayoutAttributes
     {
-        let attributes = UICollectionViewLayoutAttributes(forCellWithIndexPath: indexPath)
+        let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
         attributes.frame = frame.CGRectWithMajorAxis(majorAxis)
         attributes.transform3D = transform3D
         attributes.transform = transform
         attributes.alpha = alpha
         attributes.zIndex = zIndex
-        attributes.hidden = hidden
+        attributes.isHidden = hidden
 
         return attributes
     }

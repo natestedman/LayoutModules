@@ -20,7 +20,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     
     - parameter moduleForSection: A function to determine the layout module for each section.
     */
-    public convenience init(majorAxis: Axis, moduleForSection: (section: Int) -> LayoutModuleType)
+    public convenience init(majorAxis: Axis, moduleForSection: @escaping (_ section: Int) -> LayoutModuleType)
     {
         self.init()
         self.majorAxis = majorAxis
@@ -30,7 +30,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     // MARK: - Major Axis
 
     /// The major (scrolling) axis for the layout. By default, this is `Vertical`.
-    public var majorAxis = Axis.Vertical
+    public var majorAxis = Axis.vertical
     {
         didSet { invalidateLayout() }
     }
@@ -40,7 +40,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     /// A function to determine the layout module for each section.
     ///
     /// This property should be assigned a value by clients before performing layout.
-    public var moduleForSection: ((section: Int) -> LayoutModuleType)?
+    public var moduleForSection: ((_ section: Int) -> LayoutModuleType)?
     {
         didSet { invalidateLayout() }
     }
@@ -50,7 +50,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     /// Prepares the layout.
     ///
     /// This function is an implementation detail of `UICollectionViewLayout`, and should not be called by clients.
-    public override func prepareLayout()
+    public override func prepare()
     {
         if let collectionView = self.collectionView
         {
@@ -58,19 +58,19 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
 
             switch majorAxis
             {
-            case .Horizontal:
+            case .horizontal:
                 minorDimension = collectionView.bounds.size.height
-            case .Vertical:
+            case .vertical:
                 minorDimension = collectionView.bounds.size.width
             }
 
             var origin = Point(major: 0, minor: 0)
             
-            self.layoutAttributes = (0..<collectionView.numberOfSections()).map({ section in
+            self.layoutAttributes = (0..<collectionView.numberOfSections).map({ section in
                 // use a default layout module if one is not provided
-                let module = moduleForSection?(section: section) ?? LayoutModule.table(majorDimension: 44)
+                let module = moduleForSection?(section) ?? LayoutModule.table(majorDimension: 44)
 
-                let items = collectionView.numberOfItemsInSection(section)
+                let items = collectionView.numberOfItems(inSection: section)
                 let result = module.layoutAttributesWith(
                     count: items,
                     origin: origin,
@@ -82,7 +82,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
 
                 return zip(result.layoutAttributes, 0..<items).map({ layoutAttributes, item in
                     layoutAttributes.collectionViewLayoutAttributesForIndexPath(
-                        NSIndexPath(forItem: item, inSection: section),
+                        IndexPath(item: item, section: section),
                         withMajorAxis: majorAxis
                     )
                 })
@@ -92,7 +92,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
         }
         else
         {
-            self.contentSize = CGSizeZero
+            self.contentSize = CGSize.zero
             self.layoutAttributes = []
         }
     }
@@ -102,16 +102,16 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
 
      - parameter itemIndexPath: The index path.
      */
-    public override func initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath: NSIndexPath)
+    public override func initialLayoutAttributesForAppearingItem(at itemIndexPath: IndexPath)
         -> UICollectionViewLayoutAttributes?
     {
-        guard let layoutAttributes = super.initialLayoutAttributesForAppearingItemAtIndexPath(itemIndexPath) else {
+        guard let layoutAttributes = super.initialLayoutAttributesForAppearingItem(at: itemIndexPath) else {
             return nil
         }
 
         let attributes = LayoutAttributes(layoutAttributes: layoutAttributes, majorAxis: majorAxis)
 
-        return moduleForSection?(section: itemIndexPath.section)
+        return moduleForSection?(itemIndexPath.section)
             .initialLayoutAttributesFor(itemIndexPath, attributes: attributes)?
             .collectionViewLayoutAttributesForIndexPath(itemIndexPath, withMajorAxis: majorAxis)
     }
@@ -121,16 +121,16 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
 
      - parameter itemIndexPath: The index path.
      */
-    public override func finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath: NSIndexPath)
+    public override func finalLayoutAttributesForDisappearingItem(at itemIndexPath: IndexPath)
         -> UICollectionViewLayoutAttributes?
     {
-        guard let layoutAttributes = super.finalLayoutAttributesForDisappearingItemAtIndexPath(itemIndexPath) else {
+        guard let layoutAttributes = super.finalLayoutAttributesForDisappearingItem(at: itemIndexPath) else {
             return nil
         }
 
         let attributes = LayoutAttributes(layoutAttributes: layoutAttributes, majorAxis: majorAxis)
 
-        return moduleForSection?(section: itemIndexPath.section)
+        return moduleForSection?(itemIndexPath.section)
             .finalLayoutAttributesFor(itemIndexPath, attributes: attributes)?
             .collectionViewLayoutAttributesForIndexPath(itemIndexPath, withMajorAxis: majorAxis)
     }
@@ -138,33 +138,33 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     /// Determines if the layout should be invalidated, based on a bounds change.
     ///
     /// This function is an implementation detail of `UICollectionViewLayout`, and should not be called by clients.
-    public override func shouldInvalidateLayoutForBoundsChange(newBounds: CGRect) -> Bool
+    public override func shouldInvalidateLayout(forBoundsChange newBounds: CGRect) -> Bool
     {
-        return (self.collectionView?.bounds ?? CGRectZero).size.width != newBounds.size.width
+        return (self.collectionView?.bounds ?? CGRect.zero).size.width != newBounds.size.width
     }
     
     // MARK: - Content Size Implementation
-    private var contentSize = CGSizeZero
+    fileprivate var contentSize = CGSize.zero
     
     /// The content size of the layout.
     ///
     /// This property is an implementation detail of `UICollectionViewLayout`, and should not be called by clients.
-    public override func collectionViewContentSize() -> CGSize
+    public override var collectionViewContentSize : CGSize
     {
         return contentSize
     }
     
     // MARK: - Layout Attributes Implementation
-    private var layoutAttributes: [[UICollectionViewLayoutAttributes]] = []
+    fileprivate var layoutAttributes: [[UICollectionViewLayoutAttributes]] = []
     {
         didSet
         {
             // this is an optimization for querying the layout attributes within a rect
-            self.flatLayoutAttributes = layoutAttributes.reduce([], combine: +)
+            self.flatLayoutAttributes = layoutAttributes.reduce([], +)
         }
     }
     
-    private var flatLayoutAttributes: [UICollectionViewLayoutAttributes] = []
+    fileprivate var flatLayoutAttributes: [UICollectionViewLayoutAttributes] = []
     
     /**
     Returns the layout attributes object for the item at the specified index path.
@@ -173,7 +173,7 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
     
     - parameter indexPath: The index path.
     */
-    public override func layoutAttributesForItemAtIndexPath(indexPath: NSIndexPath) -> UICollectionViewLayoutAttributes?
+    public override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes?
     {
         return layoutAttributes[indexPath.section][indexPath.item]
     }
@@ -185,10 +185,10 @@ public final class LayoutModulesCollectionViewLayout: UICollectionViewLayout
      
      - parameter rect: The rect.
      */
-    public override func layoutAttributesForElementsInRect(rect: CGRect) -> [UICollectionViewLayoutAttributes]?
+    public override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]?
     {
         return flatLayoutAttributes.filter({ attributes in
-            return CGRectIntersectsRect(attributes.frame, rect)
+            return attributes.frame.intersects(rect)
         })
     }
 }

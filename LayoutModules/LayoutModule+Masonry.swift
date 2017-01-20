@@ -22,9 +22,9 @@ extension LayoutModule
     - parameter calculateMajorDimension: A function to calculate the major dimension of each cell, given the minor
                                          dimension and current index.
     */
-    public static func masonry(minimumMinorDimension minimumMinorDimension: CGFloat,
+    public static func masonry(minimumMinorDimension: CGFloat,
                                padding: Size,
-                               calculateMajorDimension: CalculateDimension)
+                               calculateMajorDimension: @escaping CalculateDimension)
                                -> LayoutModule
     {
         return LayoutModule { count, origin, axis, minorDimension in
@@ -36,14 +36,14 @@ extension LayoutModule
             )
             
             // keep track of the current major offset for each row or column
-            var offsets = Array(count: minorCount, repeatedValue: origin.major)
+            var offsets = Array(repeating: origin.major, count: minorCount)
 
             let attributes = (0..<count).map({ index -> LayoutAttributes in
                 // calculate the height of this masonry item
-                let cellMajor = calculateMajorDimension(index: index, axis: axis, otherDimension: cellMinor)
+                let cellMajor = calculateMajorDimension(index, axis, cellMinor)
                 
                 // find the shortest column
-                let index = (0..<minorCount).minElement({ lhs, rhs in offsets[lhs] < offsets[rhs] }) ?? 0
+                let index = (0..<minorCount).min(by: { lhs, rhs in offsets[lhs] < offsets[rhs] }) ?? 0
                 
                 // update the layout attribute frame
                 let frame = Rect(
@@ -62,7 +62,7 @@ extension LayoutModule
             
             return LayoutResult(
                 layoutAttributes: attributes,
-                finalOffset: (offsets.maxElement() ?? padding.major) - padding.major
+                finalOffset: (offsets.max() ?? padding.major) - padding.major
             )
         }
     }

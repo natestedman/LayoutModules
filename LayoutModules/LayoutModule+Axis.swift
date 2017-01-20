@@ -21,10 +21,10 @@ extension LayoutModule
      - parameter horizontal: The layout module to use for a horizontal major axis.
      - parameter vertical:   The layout module to use for a vertical major axis.
      */
-    public static func forMajorAxis(horizontal horizontal: LayoutModuleType, vertical: LayoutModuleType) -> LayoutModule
+    public static func forMajorAxis(horizontal: LayoutModuleType, vertical: LayoutModuleType) -> LayoutModule
     {
         return LayoutModule { count, origin, majorAxis, minorDimension in
-            let module = majorAxis == .Horizontal ? horizontal : vertical
+            let module = majorAxis == .horizontal ? horizontal : vertical
 
             return module.layoutAttributesWith(
                 count: count,

@@ -24,14 +24,14 @@ extension LayoutModule
                                          the parameters `index`, the current index within the section, and
                                          `otherDimension`, the minor dimension of the layout module.
     */
-    public static func dynamicTable(padding padding: CGFloat = 0, calculateMajorDimension: CalculateDimension)
+    public static func dynamicTable(padding: CGFloat = 0, calculateMajorDimension: @escaping CalculateDimension)
         -> LayoutModule
     {
         return LayoutModule { count, origin, axis, minorDimension in
             var offset = origin.major
 
             let attributes = (0..<count).map({ index -> LayoutAttributes in
-                let majorDimension = calculateMajorDimension(index: index, axis: axis, otherDimension: minorDimension)
+                let majorDimension = calculateMajorDimension(index, axis, minorDimension)
 
                 let frame = Rect(
                     origin: Point(major: offset, minor: origin.minor),
@@ -55,7 +55,7 @@ extension LayoutModule
                                  before the first cell, or after the last cell. For applying padding to those areas, the
                                  `inset` function can be used.
      */
-    public static func table(majorDimension majorDimension: CGFloat, padding: CGFloat = 0) -> LayoutModule
+    public static func table(majorDimension: CGFloat, padding: CGFloat = 0) -> LayoutModule
     {
         return dynamicTable(padding: padding, calculateMajorDimension: { _ in majorDimension })
     }

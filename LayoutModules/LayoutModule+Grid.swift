@@ -25,7 +25,7 @@ extension LayoutModule
     - parameter padding:               The padding between each row and column.
     - parameter aspectRatio:           The aspect ratio, minor dimension over major dimension.
     */
-    public static func grid(minimumMinorDimension minimumMinorDimension: CGFloat,
+    public static func grid(minimumMinorDimension: CGFloat,
                             padding: Size,
                             aspectRatio: CGFloat = 1)
                             -> LayoutModule
